@@ -9,19 +9,24 @@ body {
   background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
   background-size: 400% 400%;
   animation: gradientShift 10s ease infinite;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   min-height: 100vh;
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 #root {
   margin: 0 auto;
 }
-
 
 /* 主应用容器 */
 .app {
@@ -29,7 +34,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
 }
 
 .container {
@@ -42,12 +46,19 @@ body {
   width: 100%;
   text-align: center;
   border: 3px solid #fff;
-  animation: float 6s ease-in-out infinite;
+  /* animation: float 6s ease-in-out infinite; */
+  padding: 6px;
+  margin: 10px;
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 /* 标题样式 */
@@ -60,8 +71,13 @@ body {
 }
 
 @keyframes bounce {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .subtitle {
@@ -130,7 +146,7 @@ body {
 .result-section {
   background: linear-gradient(135deg, #667eea, #764ba2);
   border-radius: 20px;
-  padding: 25px;
+  padding: 10px;
   margin-bottom: 30px;
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
@@ -146,7 +162,7 @@ body {
 .mahjong-result {
   background: rgba(255, 255, 255, 0.9);
   border-radius: 15px;
-  padding: 25px;
+  padding: 10px;
   font-size: 3rem;
   min-height: 120px;
   display: flex;
@@ -199,15 +215,20 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 /* AI文案区域 */
 .ai-section {
   background: linear-gradient(135deg, #667eea, #764ba2);
   border-radius: 20px;
-  padding: 25px;
+  padding: 10px;
   margin-bottom: 30px;
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
@@ -268,13 +289,14 @@ body {
 }
 
 @keyframes sparkle {
-  0%, 100% { 
-    transform: scale(1) rotate(0deg); 
-    opacity: 1; 
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
   }
-  50% { 
-    transform: scale(1.2) rotate(180deg); 
-    opacity: 0.8; 
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 0.8;
   }
 }
 
@@ -284,8 +306,12 @@ body {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .ai-result {
@@ -337,12 +363,20 @@ body {
   animation: loading-bounce 1.4s ease-in-out infinite both;
 }
 
-.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
-.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
-.loading-dots span:nth-child(3) { animation-delay: 0s; }
+.loading-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.loading-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+.loading-dots span:nth-child(3) {
+  animation-delay: 0s;
+}
 
 @keyframes loading-bounce {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0.8);
     opacity: 0.5;
   }
@@ -479,64 +513,59 @@ body {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-  .container {
-    padding: 25px;
-    margin: 10px;
-  }
-  
   .title {
     font-size: 2rem;
   }
-  
+
   .input-section {
     flex-direction: column;
   }
-  
+
   .number-input {
     min-width: 100%;
   }
-  
+
   .ai-header {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .ai-label {
     margin-bottom: 10px;
   }
-  
+
   .generate-btn {
     font-size: 0.9rem;
     padding: 10px 16px;
     min-width: 100px;
   }
-  
+
   .ai-result {
-    padding: 20px;
+    padding: 10px;
     min-height: 80px;
   }
-  
+
   .copywriting-text {
     font-size: 1rem;
   }
-  
+
   .copy-copywriting-btn {
     font-size: 0.9rem;
     padding: 10px 16px;
     min-width: 120px;
   }
-  
+
   .mapping-grid {
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 10px;
   }
-  
+
   .mahjong-result {
     font-size: 2.2rem;
-    padding: 20px;
+    padding: 6px;
     min-height: 100px;
   }
-  
+
   .copy-btn {
     font-size: 0.9rem;
     padding: 10px 16px;
