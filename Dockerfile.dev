@@ -1,0 +1,16 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# 复制package.json和package-lock.json
+COPY package*.json ./
+
+RUN npm install
+
+# dev环境，将通过docker-compose volume挂载源代码热更新，因此dev镜像中不需要复制代码进去
+
+# 暴露端口
+EXPOSE 5173
+
+# 启动开发服务器
+CMD ["npm", "run", "dev"] 

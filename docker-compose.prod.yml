@@ -1,0 +1,9 @@
+services:
+  app:
+    image: ${DOCKER_USERNAME}/hate-ocr:latest
+    container_name: hate-ocr-prod
+    env_file: .env
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
