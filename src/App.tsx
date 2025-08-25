@@ -208,8 +208,21 @@ function App() {
   return (
     <div className="app">
       <div className="container">
-        <h1 className="title">🀄 麻将数字转换器 🀄</h1>
-        <p className="subtitle">输入手机号码，生成麻将emoji表情和AI创意文案！</p>
+        <header className="header">
+          <div className="logo-section">
+            <img src="/logo.png" alt="讨厌OCR Logo" className="logo" />
+            <div className="brand-info">
+              <h1 className="title">讨厌OCR</h1>
+            </div>
+          </div>
+          <div className="intro-section">
+            <p className="subtitle">
+              绕过社交平台限制，用麻将 🀄 emoji 🀄 优雅分享手机号！
+              <br />
+              支持麻将表情转换 + AI智能文案生成，让分享联系方式更有趣更安全
+            </p>
+          </div>
+        </header>
         
         <div className="input-section">
           <input
