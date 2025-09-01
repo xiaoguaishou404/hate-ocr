@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-export function useAutoZoom() {
+export function useAutoZoom(contentDependency?: any) {
   const [zoom, setZoom] = useState(1);
   const [zoomDOM, setZoomDOM] = useState<HTMLElement | null>(null);
 
@@ -25,7 +25,7 @@ export function useAutoZoom() {
     calculateScale();
     window.addEventListener("resize", calculateScale);
     return () => window.removeEventListener("resize", calculateScale);
-  }, [calculateScale]);
+  }, [calculateScale, contentDependency]);
 
   return {
     zoomRefCallback,

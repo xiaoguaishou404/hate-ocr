@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import figlet from "figlet";
 import Doh from "figlet/importable-fonts/Doh.js";
@@ -13,28 +13,12 @@ function App() {
   const [aiCopywriting, setAiCopywriting] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [copyCopywritingSuccess, setCopyCopywritingSuccess] = useState(false);
-  const [figletText, setFigletText] = useState("");
-  const { zoomRefCallback, zoom } = useAutoZoom();
-  // 生成figlet文本
-  useEffect(() => {
-    figlet.text(
-      "sls",
-      {
-        font: "Doh",
-      },
-      function (err, data) {
-        if (err) {
-          console.error("Figlet error:", err);
-          return;
-        }
-        setFigletText(data || "");
-      }
-    );
-  }, []);
-
+  const [phoneFigletText, setPhoneFigletText] = useState("");
+  const { zoomRefCallback: phoneZoomRefCallback, zoom: phoneZoom } =
+    useAutoZoom(phoneFigletText);
 
   // 数字到麻将emoji的映射
-  const numberToMahjong: { [key: string]: string } = {
+  const numberToMahjong: Record<string, string> = {
     "0": "🀆",
     "1": "🀐",
     "2": "🀑",
@@ -51,8 +35,30 @@ function App() {
   const convertToMahjong = (input: string) => {
     return input
       .split("")
-      .map((digit) => numberToMahjong[digit] || "")
+      .map((digit) => numberToMahjong[digit])
       .join("");
+  };
+
+  // 生成手机号码figlet文本
+  const generatePhoneFiglet = (phoneNumber: string) => {
+    if (!phoneNumber) {
+      setPhoneFigletText("");
+      return;
+    }
+
+    figlet.text(
+      phoneNumber,
+      {
+        font: "Doh",
+      },
+      function (err, data) {
+        if (err) {
+          console.error("Phone Figlet error:", err);
+          return;
+        }
+        setPhoneFigletText(data || "");
+      }
+    );
   };
 
   // 处理输入变化
@@ -60,6 +66,7 @@ function App() {
     const value = e.target.value.replace(/\D/g, ""); // 只保留数字
     setInputNumber(value);
     setMahjongResult(convertToMahjong(value));
+    generatePhoneFiglet(value);
   };
 
   // 清空输入
@@ -67,6 +74,7 @@ function App() {
     setInputNumber("");
     setMahjongResult("");
     setAiCopywriting("");
+    setPhoneFigletText("");
   };
 
   // 复制麻将结果到剪贴板
@@ -173,9 +181,7 @@ function App() {
     } catch (error) {
       console.error("生成文案失败:", error);
 
-      // 显示更详细的错误信息
-      const errorMessage = error instanceof Error ? error.message : "未知错误";
-      alert(`生成文案失败: ${errorMessage}`);
+      alert(`生成文案失败: ${error || "未知错误"}`);
 
       // 提供降级方案：使用本地模板生成
       const fallbackCopywriting = generateFallbackCopywriting(inputNumber);
@@ -239,26 +245,15 @@ function App() {
     }
   };
 
-  const exportImg = async () => {
-    const el = document.querySelector(".figlet-section") as HTMLElement;
-    const result = await snapdom(el, { scale: 1 });
-    const img = await result.toPng();
-    img.style.display = "none";
-    document.body.appendChild(img);
-    await result.download({ format: "jpg", filename: "my-capture" });
-    document.body.removeChild(img);
+  const exportPhoneFigletImg = async () => {
+    const el = document.querySelector(".phone-figlet-section") as HTMLElement;
+    snapdom.download(el);
   };
 
   return (
     <div className="app">
       <div className="container">
         <header className="header">
-          {figletText && (
-            <div className="figlet-section">
-                <pre className="figlet-text" style={{zoom,width:'fit-content'}} ref={zoomRefCallback}>{figletText}</pre>
-            </div>
-          )}
-          <button onClick={exportImg}>导出img</button>
           <div className="logo-section">
             <img src="/logo.png" alt="讨厌OCR Logo" className="logo" />
             <div className="brand-info">
@@ -310,6 +305,34 @@ function App() {
           <div className="mahjong-result">
             {mahjongResult || "等待输入数字..."}
           </div>
+        </div>
+
+        <div className="phone-figlet-module">
+          <div className="phone-figlet-header">
+            <div className="phone-figlet-label">📱 手机号码 Figlet</div>
+            {phoneFigletText && (
+              <button onClick={exportPhoneFigletImg} className="export-btn">
+                导出图片
+              </button>
+            )}
+          </div>
+          {phoneFigletText ? (
+            <div className="phone-figlet-section" style={{ padding: "0 20%" }}>
+              <pre
+                className="phone-figlet-text"
+                style={{ zoom: phoneZoom, width: "fit-content" }}
+                ref={phoneZoomRefCallback}
+              >
+                {phoneFigletText}
+              </pre>
+            </div>
+          ) : (
+            <div className="phone-figlet-empty">
+              <div className="empty-text">
+                输入手机号码后，这里将显示艺术字效果
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="ai-section">
