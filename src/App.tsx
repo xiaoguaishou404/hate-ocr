@@ -1,5 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
+import figlet from "figlet";
+import Doh from "figlet/importable-fonts/Doh.js";
+import { snapdom } from "@zumer/snapdom";
+import { useAutoZoom } from "./hooks/useAutoZoom";
+figlet.parseFont("Doh", Doh);
 
 function App() {
   const [inputNumber, setInputNumber] = useState("");
@@ -8,6 +13,25 @@ function App() {
   const [aiCopywriting, setAiCopywriting] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [copyCopywritingSuccess, setCopyCopywritingSuccess] = useState(false);
+  const [figletText, setFigletText] = useState("");
+  const { zoomRefCallback, zoom } = useAutoZoom();
+  // 生成figlet文本
+  useEffect(() => {
+    figlet.text(
+      "sls",
+      {
+        font: "Doh",
+      },
+      function (err, data) {
+        if (err) {
+          console.error("Figlet error:", err);
+          return;
+        }
+        setFigletText(data || "");
+      }
+    );
+  }, []);
+
 
   // 数字到麻将emoji的映射
   const numberToMahjong: { [key: string]: string } = {
@@ -215,10 +239,26 @@ function App() {
     }
   };
 
+  const exportImg = async () => {
+    const el = document.querySelector(".figlet-section") as HTMLElement;
+    const result = await snapdom(el, { scale: 1 });
+    const img = await result.toPng();
+    img.style.display = "none";
+    document.body.appendChild(img);
+    await result.download({ format: "jpg", filename: "my-capture" });
+    document.body.removeChild(img);
+  };
+
   return (
     <div className="app">
       <div className="container">
         <header className="header">
+          {figletText && (
+            <div className="figlet-section">
+                <pre className="figlet-text" style={{zoom,width:'fit-content'}} ref={zoomRefCallback}>{figletText}</pre>
+            </div>
+          )}
+          <button onClick={exportImg}>导出img</button>
           <div className="logo-section">
             <img src="/logo.png" alt="讨厌OCR Logo" className="logo" />
             <div className="brand-info">
