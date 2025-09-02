@@ -7,8 +7,8 @@ import { useAutoZoom } from "./hooks/useAutoZoom";
 figlet.parseFont("Doh", Doh);
 
 function App() {
-  const [inputNumber, setInputNumber] = useState("");
-  const [mahjongResult, setMahjongResult] = useState("");
+  const [inputText, setInputText] = useState("");
+  const [emojiResult, setEmojiResult] = useState("");
   const [copySuccess, setCopySuccess] = useState(false);
   const [aiCopywriting, setAiCopywriting] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -17,8 +17,9 @@ function App() {
   const { zoomRefCallback: phoneZoomRefCallback, zoom: phoneZoom } =
     useAutoZoom(phoneFigletText, 100);
 
-  // 数字到麻将emoji的映射
-  const numberToMahjong: Record<string, string> = {
+  // 数字和字母到emoji的映射
+  const charToEmoji: Record<string, string> = {
+    // 数字到麻将emoji
     "0": "🀆",
     "1": "🀐",
     "2": "🀑",
@@ -29,31 +30,85 @@ function App() {
     "7": "🀖",
     "8": "🀗",
     "9": "🀘",
+    // 字母到旗帜emoji
+    "A": "🇦",
+    "B": "🇧",
+    "C": "🇨",
+    "D": "🇩",
+    "E": "🇪",
+    "F": "🇫",
+    "G": "🇬",
+    "H": "🇭",
+    "I": "🇮",
+    "J": "🇯",
+    "K": "🇰",
+    "L": "🇱",
+    "M": "🇲",
+    "N": "🇳",
+    "O": "🇴",
+    "P": "🇵",
+    "Q": "🇶",
+    "R": "🇷",
+    "S": "🇸",
+    "T": "🇹",
+    "U": "🇺",
+    "V": "🇻",
+    "W": "🇼",
+    "X": "🇽",
+    "Y": "🇾",
+    "Z": "🇿",
+    "a": "🇦",
+    "b": "🇧",
+    "c": "🇨",
+    "d": "🇩",
+    "e": "🇪",
+    "f": "🇫",
+    "g": "🇬",
+    "h": "🇭",
+    "i": "🇮",
+    "j": "🇯",
+    "k": "🇰",
+    "l": "🇱",
+    "m": "🇲",
+    "n": "🇳",
+    "o": "🇴",
+    "p": "🇵",
+    "q": "🇶",
+    "r": "🇷",
+    "s": "🇸",
+    "t": "🇹",
+    "u": "🇺",
+    "v": "🇻",
+    "w": "🇼",
+    "x": "🇽",
+    "y": "🇾",
+    "z": "🇿",
   };
 
-  // 转换数字为麻将emoji
-  const convertToMahjong = (input: string) => {
+  // 转换数字和字母为emoji（用空格分割）
+  const convertToEmoji = (input: string) => {
     return input
       .split("")
-      .map((digit) => numberToMahjong[digit])
-      .join("");
+      .map((char) => charToEmoji[char])
+      .filter(Boolean) // 过滤掉未定义的字符
+      .join(" "); // 用空格分割emoji
   };
 
-  // 生成手机号码figlet文本
-  const generatePhoneFiglet = (phoneNumber: string) => {
-    if (!phoneNumber) {
+  // 生成figlet文本
+  const generateFigletText = (text: string) => {
+    if (!text) {
       setPhoneFigletText("");
       return;
     }
 
     figlet.text(
-      phoneNumber,
+      text,
       {
         font: "Doh",
       },
       function (err, data) {
         if (err) {
-          console.error("Phone Figlet error:", err);
+          console.error("Figlet error:", err);
           return;
         }
         setPhoneFigletText(data || "");
@@ -63,33 +118,33 @@ function App() {
 
   // 处理输入变化
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\D/g, ""); // 只保留数字
-    setInputNumber(value);
-    setMahjongResult(convertToMahjong(value));
-    generatePhoneFiglet(value);
+    const value = e.target.value.replace(/[^a-zA-Z0-9]/g, ""); // 只保留字母和数字
+    setInputText(value);
+    setEmojiResult(convertToEmoji(value));
+    generateFigletText(value);
   };
 
   // 清空输入
   const clearInput = () => {
-    setInputNumber("");
-    setMahjongResult("");
+    setInputText("");
+    setEmojiResult("");
     setAiCopywriting("");
     setPhoneFigletText("");
   };
 
-  // 复制麻将结果到剪贴板
+  // 复制emoji结果到剪贴板
   const copyToClipboard = async () => {
-    if (!mahjongResult) return;
+    if (!emojiResult) return;
 
     try {
-      await navigator.clipboard.writeText(mahjongResult);
+      await navigator.clipboard.writeText(emojiResult);
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000); // 2秒后重置状态
     } catch (err) {
       console.error("复制失败:", err);
       // 降级方案：选择文本
       const textArea = document.createElement("textarea");
-      textArea.value = mahjongResult;
+      textArea.value = emojiResult;
       document.body.appendChild(textArea);
       textArea.select();
       try {
@@ -129,13 +184,19 @@ function App() {
 
   // 生成AI文案
   const generateAiCopywriting = async () => {
-    if (!inputNumber) {
-      alert("请先输入手机号码");
+    if (!inputText) {
+      alert("请先输入内容");
+      return;
+    }
+
+    // 检测是否包含字母
+    if (/[a-zA-Z]/.test(inputText)) {
+      alert("暂不支持字母AI文案提示，等待后续开发。");
       return;
     }
 
     // 验证手机号格式（基本验证）
-    if (inputNumber.length < 8) {
+    if (inputText.length < 8) {
       alert("请输入有效的手机号码（至少8位数字）");
       return;
     }
@@ -144,14 +205,14 @@ function App() {
 
     try {
       // 构建AI提示词，要求生成隐藏手机号的创意文案
-      const prompt = `请为手机号码"${inputNumber}"创作一段有趣的文案，要求：
+      const prompt = `请为手机号码"${inputText}"创作一段有趣的文案，要求：
 1. 将手机号的每一位数字巧妙地隐藏在一个生动的故事或场景中
 2. 文案要自然流畅，不露痕迹地包含所有数字
 3. 可以是日常生活场景、诗意描述或有趣的小故事
 4. 字数控制在100字以内
 5. 风格要轻松有趣，富有想象力
 
-示例格式：昨晚走过1座小桥，看见天上有55颗星...（将${inputNumber}的每位数字融入故事中）
+示例格式：昨晚走过1座小桥，看见天上有55颗星...（将${inputText}的每位数字融入故事中）
 
 请直接返回创作的文案内容，不要包含其他说明文字。`;
 
@@ -184,7 +245,7 @@ function App() {
       alert(`生成文案失败: ${error || "未知错误"}`);
 
       // 提供降级方案：使用本地模板生成
-      const fallbackCopywriting = generateFallbackCopywriting(inputNumber);
+      const fallbackCopywriting = generateFallbackCopywriting(inputText);
       setAiCopywriting(`[离线模式] ${fallbackCopywriting}`);
     } finally {
       setIsGenerating(false);
@@ -270,11 +331,11 @@ function App() {
         <div className="input-section">
           <input
             type="text"
-            value={inputNumber}
+            value={inputText}
             onChange={handleInputChange}
-            placeholder="请输入手机号码（例如：13800138000）"
+            placeholder="请输入数字或字母（例如：13800138000 或 ABC123）"
             className="number-input"
-            maxLength={11}
+            maxLength={20}
           />
           <div onClick={clearInput} className="btn-base">
             清空
@@ -283,9 +344,9 @@ function App() {
 
         <div className="card-module">
           <div className="module-header">
-            <div className="header-title">麻将表示：</div>
+            <div className="header-title">Emoji表示：</div>
             <div className="header-right">
-              {mahjongResult && (
+              {emojiResult && (
                 <div onClick={copyToClipboard} className="btn-base">
                   {copySuccess ? <>已复制！</> : <>复制结果</>}
                 </div>
@@ -293,13 +354,13 @@ function App() {
             </div>
           </div>
           <div className="module-content mahjong-result">
-            {mahjongResult || "等待输入数字..."}
+            {emojiResult || "等待输入内容..."}
           </div>
         </div>
 
         <div className="phone-figlet-module card-module">
           <div className="module-header">
-            <div className="header-title">📱 手机号码 Figlet</div>
+            <div className="header-title">🎨 Figlet 艺术字</div>
             <div className="header-right">
               {phoneFigletText && (
                 <div onClick={exportPhoneFigletImg} className="btn-base">
@@ -320,7 +381,7 @@ function App() {
             </div>
           ) : (
             <div className="module-content">
-              输入手机号码后，这里将显示艺术字效果
+  输入内容后，这里将显示艺术字效果
             </div>
           )}
         </div>
@@ -329,7 +390,7 @@ function App() {
           <div className="module-header">
             <div className="header-title">🤖 AI生成文案</div>
             <div className="header-right">
-              {inputNumber && (
+              {inputText && (
                 <div
                   onClick={generateAiCopywriting}
                   className="btn-base"
@@ -352,7 +413,7 @@ function App() {
               <div>{aiCopywriting}</div>
             ) : (
               <div>
-                输入手机号码后，点击"生成文案"按钮，AI将为您创作隐藏手机号的有趣文案~
+                输入手机号码后，点击“生成文案”按钮，AI将为您创作隐藏手机号的有趣文案~（暂不支持字母）
               </div>
             )}
           </div>
