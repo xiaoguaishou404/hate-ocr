@@ -15,7 +15,7 @@ function App() {
   const [copyCopywritingSuccess, setCopyCopywritingSuccess] = useState(false);
   const [phoneFigletText, setPhoneFigletText] = useState("");
   const { zoomRefCallback: phoneZoomRefCallback, zoom: phoneZoom } =
-    useAutoZoom(phoneFigletText);
+    useAutoZoom(phoneFigletText, 100);
 
   // 数字到麻将emoji的映射
   const numberToMahjong: Record<string, string> = {
@@ -312,7 +312,7 @@ function App() {
             <div className="module-content" style={{ padding: "0 20%" }}>
               <pre
                 className="phone-figlet-text"
-                style={{ zoom: phoneZoom, width: "fit-content" }}
+                style={{ zoom: phoneZoom, width: "fit-content",margin: "0 auto" }}
                 ref={phoneZoomRefCallback}
               >
                 {phoneFigletText}
