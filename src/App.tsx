@@ -246,7 +246,7 @@ function App() {
   };
 
   const exportPhoneFigletImg = async () => {
-    const el = document.querySelector(".phone-figlet-section") as HTMLElement;
+    const el = document.querySelector(".phone-figlet-text") as HTMLElement;
     snapdom.download(el);
   };
 
@@ -261,11 +261,9 @@ function App() {
             </div>
           </div>
           <div className="intro-section">
-            <p className="subtitle">
-              绕过社交平台限制，用麻将 🀄 emoji 🀄 优雅分享手机号！
-              <br />
-              支持麻将表情转换 + AI智能文案生成，让分享联系方式更有趣更安全
-            </p>
+            绕过社交平台限制，用麻将 🀄 emoji 🀄 优雅分享手机号！
+            <br />
+            支持麻将表情转换 + AI智能文案生成，让分享联系方式更有趣更安全
           </div>
         </header>
 
@@ -278,46 +276,40 @@ function App() {
             className="number-input"
             maxLength={11}
           />
-          <button onClick={clearInput} className="clear-btn">
+          <div onClick={clearInput} className="btn-base">
             清空
-          </button>
+          </div>
         </div>
 
-        <div className="result-section">
-          <div className="result-label">
-            <div>麻将表示：</div>
-            {mahjongResult && (
-              <button onClick={copyToClipboard} className="copy-btn">
-                {copySuccess ? (
-                  <>
-                    <span className="copy-icon">✅</span>
-                    已复制！
-                  </>
-                ) : (
-                  <>
-                    <span className="copy-icon">📋</span>
-                    复制结果
-                  </>
-                )}
-              </button>
-            )}
+        <div className="card-module">
+          <div className="module-header">
+            <div className="header-title">麻将表示：</div>
+            <div className="header-right">
+              {mahjongResult && (
+                <div onClick={copyToClipboard} className="btn-base">
+                  {copySuccess ? <>已复制！</> : <>复制结果</>}
+                </div>
+              )}
+            </div>
           </div>
-          <div className="mahjong-result">
+          <div className="module-content mahjong-result">
             {mahjongResult || "等待输入数字..."}
           </div>
         </div>
 
-        <div className="phone-figlet-module">
-          <div className="phone-figlet-header">
-            <div className="phone-figlet-label">📱 手机号码 Figlet</div>
-            {phoneFigletText && (
-              <button onClick={exportPhoneFigletImg} className="export-btn">
-                导出图片
-              </button>
-            )}
+        <div className="phone-figlet-module card-module">
+          <div className="module-header">
+            <div className="header-title">📱 手机号码 Figlet</div>
+            <div className="header-right">
+              {phoneFigletText && (
+                <div onClick={exportPhoneFigletImg} className="btn-base">
+                  导出图片
+                </div>
+              )}
+            </div>
           </div>
           {phoneFigletText ? (
-            <div className="phone-figlet-section" style={{ padding: "0 20%" }}>
+            <div className="module-content" style={{ padding: "0 20%" }}>
               <pre
                 className="phone-figlet-text"
                 style={{ zoom: phoneZoom, width: "fit-content" }}
@@ -327,89 +319,42 @@ function App() {
               </pre>
             </div>
           ) : (
-            <div className="phone-figlet-empty">
-              <div className="empty-text">
-                输入手机号码后，这里将显示艺术字效果
-              </div>
+            <div className="module-content">
+              输入手机号码后，这里将显示艺术字效果
             </div>
           )}
         </div>
 
-        <div className="ai-section">
-          <div className="ai-header">
-            <div className="ai-label">🤖 AI生成文案</div>
-            {inputNumber && (
-              <button
-                onClick={generateAiCopywriting}
-                className="generate-btn"
-                disabled={isGenerating}
-              >
-                {isGenerating ? (
-                  <>
-                    <span className="loading-icon">⏳</span>
-                    生成中...
-                  </>
-                ) : (
-                  <>
-                    <span className="ai-icon">✨</span>
-                    生成文案
-                  </>
-                )}
-              </button>
-            )}
-          </div>
-          <div className="ai-result">
-            {isGenerating ? (
-              <div className="loading-text">
-                <div className="loading-dots">
-                  <span></span>
-                  <span></span>
-                  <span></span>
+        <div className="card-module">
+          <div className="module-header">
+            <div className="header-title">🤖 AI生成文案</div>
+            <div className="header-right">
+              {inputNumber && (
+                <div
+                  onClick={generateAiCopywriting}
+                  className="btn-base"
+                  style={{ opacity: isGenerating ? 0.7 : 1 }}
+                >
+                  {isGenerating ? <>生成中...</> : <>生成文案</>}
                 </div>
-                AI正在为您创作独特文案，请稍候...
-              </div>
-            ) : aiCopywriting ? (
-              <div className="copywriting-text">{aiCopywriting}</div>
-            ) : (
-              <div className="empty-text">
-                <div className="hint-icon">💡</div>
-                输入手机号码后，点击"生成文案"按钮，AI将为您创作隐藏手机号的有趣文案~
-                <div className="example-hint">
-                  例如：将 "13800138000" 转化为生动有趣的小故事
-                </div>
-              </div>
-            )}
-          </div>
-          {aiCopywriting && !isGenerating && (
-            <button
-              onClick={copyCopywritingToClipboard}
-              className="copy-copywriting-btn"
-            >
-              {copyCopywritingSuccess ? (
-                <>
-                  <span className="copy-icon">✅</span>
-                  已复制！
-                </>
-              ) : (
-                <>
-                  <span className="copy-icon">📋</span>
-                  复制文案
-                </>
               )}
-            </button>
-          )}
-        </div>
-
-        <div className="example-section">
-          <h3>对照表：</h3>
-          <div className="mapping-grid">
-            {Object.entries(numberToMahjong).map(([number, mahjong]) => (
-              <div key={number} className="mapping-item">
-                <span className="number">{number}</span>
-                <span className="arrow">→</span>
-                <span className="mahjong">{mahjong}</span>
+              {aiCopywriting && !isGenerating && (
+                <div onClick={copyCopywritingToClipboard} className="btn-base">
+                  {copyCopywritingSuccess ? <>已复制！</> : <>复制文案</>}
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="module-content">
+            {isGenerating ? (
+              <div>AI正在为您创作独特文案，请稍候...</div>
+            ) : aiCopywriting ? (
+              <div>{aiCopywriting}</div>
+            ) : (
+              <div>
+                输入手机号码后，点击"生成文案"按钮，AI将为您创作隐藏手机号的有趣文案~
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
