@@ -1,0 +1,50 @@
+# robots.txt for 讨厌OCR (HateOCR)
+# https://hateocr.ccxzhi.com/
+
+User-agent: *
+Allow: /
+
+# 主要文件
+Allow: /logo.png
+Allow: /wechat.jpg
+Allow: /sitemap.xml
+Allow: /manifest.json
+
+# 禁止访问源码和构建文件
+Disallow: /src/
+Disallow: /node_modules/
+Disallow: /*.map
+Disallow: /dist/
+Disallow: /.git/
+Disallow: /.vscode/
+Disallow: /.env*
+
+# 允许搜索引擎索引静态资源
+Allow: /assets/
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.svg
+Allow: /*.ico
+Allow: /*.webp
+
+# Sitemap位置
+Sitemap: https://hateocr.ccxzhi.com/sitemap.xml
+
+# 特定搜索引擎优化
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Sogou web spider
+Allow: /
+
+User-agent: 360Spider
+Allow: /
+
+# 爬取频率限制
+Crawl-delay: 1

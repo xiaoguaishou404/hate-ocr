@@ -1,0 +1,22 @@
+{
+  "name": "讨厌OCR - 手机号麻将转换器",
+  "short_name": "讨厌OCR",
+  "description": "创新的手机号隐藏工具，支持麻将emoji转换和AI创意文案生成，绕过社交平台限制",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "categories": ["utilities", "productivity", "tools"],
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ],
+  "prefer_related_applications": false
+}
