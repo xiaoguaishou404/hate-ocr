@@ -31,58 +31,58 @@ function App() {
     "8": "🀗",
     "9": "🀘",
     // 字母到旗帜emoji
-    "A": "🇦",
-    "B": "🇧",
-    "C": "🇨",
-    "D": "🇩",
-    "E": "🇪",
-    "F": "🇫",
-    "G": "🇬",
-    "H": "🇭",
-    "I": "🇮",
-    "J": "🇯",
-    "K": "🇰",
-    "L": "🇱",
-    "M": "🇲",
-    "N": "🇳",
-    "O": "🇴",
-    "P": "🇵",
-    "Q": "🇶",
-    "R": "🇷",
-    "S": "🇸",
-    "T": "🇹",
-    "U": "🇺",
-    "V": "🇻",
-    "W": "🇼",
-    "X": "🇽",
-    "Y": "🇾",
-    "Z": "🇿",
-    "a": "🇦",
-    "b": "🇧",
-    "c": "🇨",
-    "d": "🇩",
-    "e": "🇪",
-    "f": "🇫",
-    "g": "🇬",
-    "h": "🇭",
-    "i": "🇮",
-    "j": "🇯",
-    "k": "🇰",
-    "l": "🇱",
-    "m": "🇲",
-    "n": "🇳",
-    "o": "🇴",
-    "p": "🇵",
-    "q": "🇶",
-    "r": "🇷",
-    "s": "🇸",
-    "t": "🇹",
-    "u": "🇺",
-    "v": "🇻",
-    "w": "🇼",
-    "x": "🇽",
-    "y": "🇾",
-    "z": "🇿",
+    A: "🇦",
+    B: "🇧",
+    C: "🇨",
+    D: "🇩",
+    E: "🇪",
+    F: "🇫",
+    G: "🇬",
+    H: "🇭",
+    I: "🇮",
+    J: "🇯",
+    K: "🇰",
+    L: "🇱",
+    M: "🇲",
+    N: "🇳",
+    O: "🇴",
+    P: "🇵",
+    Q: "🇶",
+    R: "🇷",
+    S: "🇸",
+    T: "🇹",
+    U: "🇺",
+    V: "🇻",
+    W: "🇼",
+    X: "🇽",
+    Y: "🇾",
+    Z: "🇿",
+    a: "🇦",
+    b: "🇧",
+    c: "🇨",
+    d: "🇩",
+    e: "🇪",
+    f: "🇫",
+    g: "🇬",
+    h: "🇭",
+    i: "🇮",
+    j: "🇯",
+    k: "🇰",
+    l: "🇱",
+    m: "🇲",
+    n: "🇳",
+    o: "🇴",
+    p: "🇵",
+    q: "🇶",
+    r: "🇷",
+    s: "🇸",
+    t: "🇹",
+    u: "🇺",
+    v: "🇻",
+    w: "🇼",
+    x: "🇽",
+    y: "🇾",
+    z: "🇿",
   };
 
   // 转换数字和字母为emoji（用空格分割）
@@ -308,115 +308,138 @@ function App() {
 
   const exportPhoneFigletImg = async () => {
     const el = document.querySelector(".phone-figlet-text") as HTMLElement;
-    snapdom.download(el);
+    snapdom.download(el,{
+      scale: 5,
+    });
   };
 
   return (
     <div className="app">
       <div className="container">
-        <header className="header">
-          <div className="logo-section">
-            <img src="/logo.png" alt="讨厌OCR Logo" className="logo" />
-            <div className="brand-info">
-              <h1 className="title">讨厌OCR</h1>
+        <div className="main">
+          <header className="header">
+            <div className="logo-section">
+              <img src="/logo.png" alt="讨厌OCR Logo" className="logo" />
+              <div className="brand-info">
+                <h1 className="title">讨厌OCR</h1>
+              </div>
             </div>
-          </div>
-          <div className="intro-section">
-            绕过社交平台限制，用麻将 🀄 emoji 🀄 优雅分享手机号！
-            <br />
-            支持麻将表情转换 + AI智能文案生成，让分享联系方式更有趣更安全
-          </div>
-        </header>
+            <div className="intro-section">
+              绕过社交平台限制，用麻将 🀄 emoji 🀄 优雅分享手机号！
+              <br />
+              支持麻将表情转换 + AI智能文案生成，让分享联系方式更有趣更安全
+            </div>
+          </header>
 
-        <div className="input-section">
-          <input
-            type="text"
-            value={inputText}
-            onChange={handleInputChange}
-            placeholder="请输入数字或字母（例如：13800138000 或 ABC123）"
-            className="number-input"
-            maxLength={20}
-          />
-          <div onClick={clearInput} className="btn-base">
-            清空
+          <div className="input-section">
+            <input
+              type="text"
+              value={inputText}
+              onChange={handleInputChange}
+              placeholder="请输入数字或字母（例如：13800138000 或 ABC123）"
+              className="number-input"
+              maxLength={20}
+            />
+            <div onClick={clearInput} className="btn-base">
+              清空
+            </div>
           </div>
-        </div>
 
-        <div className="card-module">
-          <div className="module-header">
-            <div className="header-title">Emoji表示：</div>
-            <div className="header-right">
-              {emojiResult && (
-                <div onClick={copyToClipboard} className="btn-base">
-                  {copySuccess ? <>已复制！</> : <>复制结果</>}
-                </div>
-              )}
+          <div className="card-module">
+            <div className="module-header">
+              <div className="header-title">Emoji表示：</div>
+              <div className="header-right">
+                {emojiResult && (
+                  <div onClick={copyToClipboard} className="btn-base">
+                    {copySuccess ? <>已复制！</> : <>复制结果</>}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="module-content mahjong-result">
-            {emojiResult || "等待输入内容..."}
-          </div>
-        </div>
-
-        <div className="phone-figlet-module card-module">
-          <div className="module-header">
-            <div className="header-title">🎨 Figlet 艺术字</div>
-            <div className="header-right">
-              {phoneFigletText && (
-                <div onClick={exportPhoneFigletImg} className="btn-base">
-                  导出图片
-                </div>
-              )}
-            </div>
-          </div>
-          {phoneFigletText ? (
-            <div className="module-content" style={{ padding: "0 20%" }}>
-              <pre
-                className="phone-figlet-text"
-                style={{ zoom: phoneZoom, width: "fit-content",margin: "0 auto" }}
-                ref={phoneZoomRefCallback}
-              >
-                {phoneFigletText}
-              </pre>
-            </div>
-          ) : (
             <div className="module-content">
-  输入内容后，这里将显示艺术字效果
-            </div>
-          )}
-        </div>
-
-        <div className="card-module">
-          <div className="module-header">
-            <div className="header-title">🤖 AI生成文案</div>
-            <div className="header-right">
-              {inputText && (
-                <div
-                  onClick={generateAiCopywriting}
-                  className="btn-base"
-                  style={{ opacity: isGenerating ? 0.7 : 1 }}
-                >
-                  {isGenerating ? <>生成中...</> : <>生成文案</>}
-                </div>
-              )}
-              {aiCopywriting && !isGenerating && (
-                <div onClick={copyCopywritingToClipboard} className="btn-base">
-                  {copyCopywritingSuccess ? <>已复制！</> : <>复制文案</>}
-                </div>
+              {emojiResult ? (
+                <div className="emoji-result">{emojiResult}</div>
+              ) : (
+                "等待输入内容..."
               )}
             </div>
           </div>
-          <div className="module-content">
-            {isGenerating ? (
-              <div>AI正在为您创作独特文案，请稍候...</div>
-            ) : aiCopywriting ? (
-              <div>{aiCopywriting}</div>
+
+          <div className="phone-figlet-module card-module">
+            <div className="module-header">
+              <div className="header-title">🎨 Figlet 艺术字</div>
+              <div className="header-right">
+                {phoneFigletText && (
+                  <div onClick={exportPhoneFigletImg} className="btn-base">
+                    导出图片
+                  </div>
+                )}
+              </div>
+            </div>
+            {phoneFigletText ? (
+              <div className="module-content">
+                <pre
+                  className="phone-figlet-text"
+                  style={{
+                    zoom: phoneZoom,
+                    width: "fit-content",
+                    margin: "0 auto",
+                  }}
+                  ref={phoneZoomRefCallback}
+                >
+                  {phoneFigletText}
+                </pre>
+              </div>
             ) : (
-              <div>
-                输入手机号码后，点击“生成文案”按钮，AI将为您创作隐藏手机号的有趣文案~（暂不支持字母）
+              <div className="module-content">
+                输入内容后，这里将显示艺术字效果
               </div>
             )}
           </div>
+
+          <div className="card-module">
+            <div className="module-header">
+              <div className="header-title">🤖 AI生成文案</div>
+              <div className="header-right">
+                {inputText && (
+                  <div
+                    onClick={generateAiCopywriting}
+                    className="btn-base"
+                    style={{ opacity: isGenerating ? 0.7 : 1 }}
+                  >
+                    {isGenerating ? <>生成中...</> : <>生成文案</>}
+                  </div>
+                )}
+                {aiCopywriting && !isGenerating && (
+                  <div
+                    onClick={copyCopywritingToClipboard}
+                    className="btn-base"
+                  >
+                    {copyCopywritingSuccess ? <>已复制！</> : <>复制文案</>}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="module-content">
+              {isGenerating ? (
+                <div>AI正在为您创作独特文案，请稍候...</div>
+              ) : aiCopywriting ? (
+                <div>{aiCopywriting}</div>
+              ) : (
+                <div>
+                  输入手机号码后，点击“生成文案”按钮，AI将为您创作隐藏手机号的有趣文案~（暂不支持字母）
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="footer">
+          <div>👨‍💻 我是一名00年的杭州前端程序员</div>
+          <div>🥶 目前工作不稳定。工资也不高。</div>
+          <div>🙏 如果您需要招程序员，拉我给您打工，请招我，谢谢！</div>
+          <div className="contact-info">💬 我的微信：xiaoguaishouccc404</div>
+          <img src="/wechat.jpg" alt="微信" className="wechat-img" />
         </div>
       </div>
     </div>
