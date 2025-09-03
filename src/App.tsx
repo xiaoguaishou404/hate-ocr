@@ -392,7 +392,7 @@ function App() {
               </div>
             ) : (
               <div className="module-content">
-                输入内容后，这里将显示艺术字效果
+                 Figlet 艺术字图片不会被ocr识别出来
               </div>
             )}
           </div>
